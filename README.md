@@ -1,12 +1,10 @@
-# Sub-700ms AI Poetry API 🚀
+# Sub700ms AI Poetry API
 
-FastAPI backend optimized for **sub-700ms latency** with streaming poetry generation and real-time performance tracking.
+A FastAPI backend that generates poetry in under 700ms. Features real-time streaming and performance tracking.
 
-## 🎯 Performance Goal
+**Live Demo:** https://sub700.onrender.com
 
-**Target: Sub-700ms response times** with comprehensive latency monitoring.
-
-## 🚀 Quick Start
+## Setup
 
 ```bash
 git clone https://github.com/your-username/sub700.git
@@ -14,24 +12,21 @@ cd sub700
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-echo "OPENAI_API_KEY=sk-your-key-here" > .env
+echo "OPENAI_API_KEY=your-key" > .env
 python main.py
 ```
 
-## 📡 Key Endpoints
+## Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
-| `POST /chat/complete` | Non-streaming poetry (shows timing) |
-| `POST /chat/stream` | Real-time streaming poetry |
-| `GET /metrics/latency` | Performance statistics |
+- `POST /chat/complete` - Get a poem with timing data
+- `POST /chat/stream` - Watch the poem generate word by word
+- `GET /metrics/latency` - See performance stats
 
-## 🧪 Testing Latency in Postman
+## Testing Performance
 
-### 1. Test Sub-700ms Performance
-
+**Quick test for speed:**
 ```http
-POST http://localhost:8000/chat/complete
+POST https://sub700.onrender.com/chat/complete
 Content-Type: application/json
 
 {
@@ -40,22 +35,11 @@ Content-Type: application/json
 }
 ```
 
-**Response shows timing:**
-```json
-{
-  "response": "Creation",
-  "timing": {
-    "total_time_ms": 586.27,     // ← Should be under 700ms
-    "llm_time_ms": 586.27,
-    "processing_time_ms": 0.0
-  }
-}
-```
+Look for `total_time_ms` in the response - should be under 700ms.
 
-### 2. Test Streaming (Real-time)
-
+**Streaming test:**
 ```http
-POST http://localhost:8000/chat/stream
+POST https://sub700.onrender.com/chat/stream
 Content-Type: application/json
 
 {
@@ -63,46 +47,28 @@ Content-Type: application/json
 }
 ```
 
-**Streaming response:**
-```
-data: {"type": "timing", "time_to_first_token_ms": 145.67}
-data: {"type": "content", "content": "Swift"}
-data: {"type": "content", "content": " wind"}
-data: {"type": "content", "content": " flows"}
-data: {"type": "complete", "timing": {"total_time_ms": 850.45}}
-data: [DONE]
-```
+You'll see the poem appear word by word in real-time.
 
-### 3. Check Performance Stats
-
+**Check stats:**
 ```http
-GET http://localhost:8000/metrics/latency
+GET https://sub700.onrender.com/metrics/latency
 ```
 
-**Key metrics:**
-```json
-{
-  "latency_ms": {
-    "mean": 612.34,
-    "p95": 756.89,
-    "p99": 789.45
-  },
-  "sub_700ms_percentage": 85.0   // ← Target: >90%
-}
-```
+The `sub_700ms_percentage` tells you how often requests finish under 700ms.
 
-## 📊 Understanding Latency
+## Understanding the Numbers
 
-- **`total_time_ms`**: Complete request time (optimization target)
-- **`time_to_first_token_ms`**: How fast streaming starts
-- **`sub_700ms_percentage`**: % of requests under 700ms
-- **Look at Postman's timing** in bottom-right of response
+- `total_time_ms` - How long the whole request took
+- `time_to_first_token_ms` - How fast streaming starts  
+- `sub_700ms_percentage` - What percent of requests are fast enough
 
-## 🚀 Deploy to Render
+The first request is always slower because connections need to warm up. Try a few requests to see the real performance.
 
-1. Push to GitHub
-2. Connect to Render as Web Service  
-3. Set environment variable: `OPENAI_API_KEY`
-4. Deploy automatically
+## Deploy Your Own
 
-**Built for speed. Optimized for real-time AI.** ⚡
+1. Fork this repo
+2. Connect to Render
+3. Set `OPENAI_API_KEY` environment variable
+4. Deploy
+
+That's it. No config needed - everything's in the code.
